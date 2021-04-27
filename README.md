@@ -2,9 +2,16 @@
 
 :warning: This is a work-in-progress, everything you see now can and probably will change.
 
+## Running the project
+We use [lerna](https://github.com/lerna/lerna) to manage our [packages](#packages). Although, in this initial stage we can work in each package individually, so you can check individual running instructions in packages section below. 
+
 ## Packages:
 ### [Client](packages/client)
 - Frontend engine's source. Currently in initial stage.
+
+#### Running the project (using packages/client as working directory)
+- `yarn` to get its dependencies
+- `yarn start:dev` to run the engine (which already supports HMR :fire:)
 
 #### Technologies
 - TypeScript
@@ -23,3 +30,6 @@
 
 ## Contributing
 This repository adheres to [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary), and also attempts to follow [The seven rules of a great Git commit message](https://chris.beams.io/posts/git-commit/#seven-rules).
+
+## Roadmap
+WIP
