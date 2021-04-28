@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "cd packages/client/src && yarn lint",
+    "start:client": "cd packages/client/src && yarn start:dev"
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
   }
