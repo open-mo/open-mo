@@ -7,10 +7,12 @@ import { Key } from './engine/types';
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
 const app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1099bb });
-const moveUp: Key = Keyboard('w');
-const moveLeft: Key = Keyboard('a');
-const moveDown: Key = Keyboard('s');
-const moveRight: Key = Keyboard('d');
+
+const canvasKeyboard = new Keyboard(app.view);
+const moveUp: Key = canvasKeyboard.addKey('w');
+const moveLeft: Key = canvasKeyboard.addKey('a');
+const moveDown: Key = canvasKeyboard.addKey('s');
+const moveRight: Key = canvasKeyboard.addKey('d');
 
 document.body.appendChild(app.view);
 

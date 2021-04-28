@@ -1,4 +1,4 @@
-type HandlerFunction = (event: KeyboardEvent) => void;
+type HandlerFunction = (event: Event) => void;
 type Noop = () => void;
 
 export interface Key {
@@ -8,10 +8,10 @@ export interface Key {
   isDown: boolean;
   /** Whether the key is up or not */
   isUp: boolean;
-  downHandler: HandlerFunction | null;
-  upHandler: HandlerFunction | null;
+  downHandler: HandlerFunction;
+  upHandler: HandlerFunction;
   /** Remove key listeners */
-  unsubscribe: Noop | null;
-  press: Noop | null;
-  release: Noop | null;
+  unsubscribe: Noop;
+  press: Noop;
+  release: Noop;
 }

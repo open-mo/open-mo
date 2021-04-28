@@ -1,55 +1,71 @@
 import { Key } from '../types';
 
-function keyboard(value: string): Key {
-  const key: Key = {
-    value,
-    isDown: false,
-    isUp: true,
-    press: () => {},
-    release: () => {},
-    unsubscribe: null,
-    downHandler: null,
-    upHandler: null,
-  };
+class Keyboard {
+  subscribedKeys: Array<Key> = [];
 
-  key.downHandler = (event) => {
-    if (event.key === key.value) {
-      if (key.isUp && key.press) {
-        key.press();
+  element: EventTarget;
+
+  constructor(element: EventTarget) {
+    this.element = element;
+  }
+
+  addKey(value: string) {
+    const key: Key = {
+      value,
+      isDown: false,
+      isUp: true,
+      press: () => {},
+      release: () => {},
+      unsubscribe: () => {},
+      downHandler: () => {},
+      upHandler: () => {},
+    };
+
+    key.downHandler = (event) => {
+      if ((event as KeyboardEvent).key === key.value) {
+        if (key.isUp && key.press) {
+          key.press();
+        }
+        key.isDown = true;
+        key.isUp = false;
+        event.preventDefault();
       }
-      key.isDown = true;
-      key.isUp = false;
-      event.preventDefault();
-    }
-  };
+    };
 
-  key.upHandler = (event) => {
-    if (event.key === key.value) {
-      if (key.isDown && key.release) {
-        key.release();
+    key.upHandler = (event) => {
+      if ((event as KeyboardEvent).key === key.value) {
+        if (key.isDown && key.release) {
+          key.release();
+        }
+        key.isDown = false;
+        key.isUp = true;
+        event.preventDefault();
       }
-      key.isDown = false;
-      key.isUp = true;
-      event.preventDefault();
-    }
-  };
+    };
 
-  const downListener = key.downHandler.bind(key);
-  const upListener = key.upHandler.bind(key);
+    const downListener = key.downHandler.bind(key);
+    const upListener = key.upHandler.bind(key);
 
-  window.addEventListener(
-    'keydown', downListener, false,
-  );
-  window.addEventListener(
-    'keyup', upListener, false,
-  );
+    this.element.addEventListener(
+      'keydown', downListener, false,
+    );
+    this.element.addEventListener(
+      'keyup', upListener, false,
+    );
 
-  key.unsubscribe = () => {
-    window.removeEventListener('keydown', downListener);
-    window.removeEventListener('keyup', upListener);
-  };
+    key.unsubscribe = () => {
+      this.element.removeEventListener('keydown', downListener);
+      this.element.removeEventListener('keyup', upListener);
 
-  return key;
+      const keyIndex = this.subscribedKeys.indexOf(key);
+      if (keyIndex > -1) {
+        this.subscribedKeys.filter((_, index: number) => index !== keyIndex);
+      }
+    };
+
+    this.subscribedKeys.push(key);
+    return key;
+  }
 }
 
-export default keyboard;
+export default Keyboard;
