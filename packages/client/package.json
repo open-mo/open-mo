@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start:dev": "npx parcel src/index.html --open",
+    "start:dev": "parcel src/index.html --open",
     "lint": "yarn eslint src/**.ts"
   },
   "dependencies": {
@@ -18,6 +18,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-parcel2": "^1.0.1",
     "eslint-plugin-import": "^2.22.1",
+    "parcel": "^2.0.0-beta.2",
     "typescript": "^4.2.4"
   }
 }
