@@ -15,11 +15,28 @@ module.exports = {
     'import/resolver': {
       parcel2: {
         root: ['./src'],
+        projectRoot: 'src',
+      },
+      node: {
+        extensions: ['.js', '.ts'],
       },
     },
   },
   plugins: [
     '@typescript-eslint',
   ],
-  rules: {},
+  rules: {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        ts: 'never',
+      },
+    ],
+    'import/no-unresolved': [2, { ignore: ['.png$', '.webp$', '.jpg$'] }],
+    'import/prefer-default-export': 'off',
+  },
 };
