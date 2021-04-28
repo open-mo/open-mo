@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start:dev": "npx parcel src/index.html --open",
+    "setup": "yarn && yarn global add parcel",
+    "dev": "parcel src/index.html --open",
     "lint": "yarn eslint src/**.ts"
   },
   "dependencies": {

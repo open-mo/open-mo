@@ -10,7 +10,7 @@ We use [lerna](https://github.com/lerna/lerna) to manage our [packages](#package
 - Frontend engine's source. Currently in initial stage.
 
 #### Running the project (using packages/client as working directory)
-- `yarn` to get its dependencies
+- `yarn setup` to get its dependencies (you'll need parcel globally installed)
 - `yarn start:dev` to run the engine (which already supports HMR :fire:)
 
 #### Technologies
