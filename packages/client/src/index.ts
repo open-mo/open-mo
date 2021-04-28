@@ -27,6 +27,16 @@ character.y = app.screen.height / 2;
 
 app.stage.addChild(character);
 
+const ws = new WebSocket('ws://127.0.0.1:8080');
+
+ws.onopen = () => {
+  ws.send('[client]: hey server :)');
+};
+
+ws.onmessage = ({ data }) => {
+  console.log('received:', data);
+};
+
 // Listen for animate update
 app.ticker.add((delta: number) => {
   if (moveLeft.isDown) {
