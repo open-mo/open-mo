@@ -7,6 +7,8 @@ import { Key } from './engine/types';
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
 const app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1099bb });
+app.view.setAttribute('tabindex', '0');
+app.view.focus();
 
 const canvasKeyboard = new Keyboard(app.view);
 const moveUp: Key = canvasKeyboard.addKey('w');
@@ -14,7 +16,7 @@ const moveLeft: Key = canvasKeyboard.addKey('a');
 const moveDown: Key = canvasKeyboard.addKey('s');
 const moveRight: Key = canvasKeyboard.addKey('d');
 
-document.body.appendChild(app.view);
+document.getElementById('canvas')?.appendChild(app.view);
 
 // create a new Sprite from an image path
 const character: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
