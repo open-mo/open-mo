@@ -31,7 +31,8 @@ character.y = app.screen.height / 2;
 
 app.stage.addChild(character);
 
-const ws = new WebSocket('ws://127.0.0.1:8080');
+const { SERVER_ADDRESS } = process.env;
+const ws = new WebSocket(`ws://${SERVER_ADDRESS}`);
 
 ws.onopen = () => {
   ws.send('[client]: hey server :)');
