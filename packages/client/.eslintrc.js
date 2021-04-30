@@ -38,5 +38,6 @@ module.exports = {
     ],
     'import/no-unresolved': [2, { ignore: ['.png$', '.webp$', '.jpg$'] }],
     'import/prefer-default-export': 'off',
+    'linebreak-style': 0,
   },
 };
