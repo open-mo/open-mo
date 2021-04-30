@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import bonecoSprite from 'url:/examples/assets/buneco.png';
+import bonecoSprite from './examples/assets/buneco.png';
 import { Keyboard } from './engine/modules';
 import { Key } from './engine/types';
 
