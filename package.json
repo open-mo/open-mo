@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "lint": "cd packages/client/src && yarn lint",
-    "start:client": "cd packages/client/src && yarn dev",
-    "start:server": "cd packages/server/src && yarn dev"
+    "setup": "cd packages/client && yarn && cd ../server && yarn",
+    "client": "cd packages/client/src && yarn dev",
+    "server": "cd packages/server/src && yarn dev"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
