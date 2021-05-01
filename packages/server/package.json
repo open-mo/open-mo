@@ -7,6 +7,7 @@
     "dev": "tsc && ts-node-dev src/index.ts"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "ws": "^7.4.5"
   },
   "devDependencies": {

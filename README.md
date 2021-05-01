@@ -4,7 +4,8 @@
 
 ## Running the project
 <sup>Disclaimer that I know that this setup not being the best right now. Things will be better. Feel free to suggest changes and open PRs regarding this.</sup>
-- `cp .env.client.sample ./packages/client/.env` to get server environment
+- `cp .env.client.sample ./packages/client/.env` to get client environment
+- `cp .env.server.sample ./packages/server/.env` to get server environment
 - `yarn setup` to get dependencies from both client and server
 - `yarn client` to start client
 - `yarn server` to start server
