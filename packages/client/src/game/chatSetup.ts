@@ -10,7 +10,9 @@ function chatSetup() {
     if (chatInput && chatHistory && chatInput.value.length > 0) {
       const message = chatInput.value;
       chatInput.value = '';
-      chatInput.focus();
+      chatInput.focus({
+        preventScroll: true,
+      });
       chatHistory.scrollTop = chatHistory.scrollHeight;
       const data: Dictionary<PacketValue> = {
         sender: 'mock-person',
