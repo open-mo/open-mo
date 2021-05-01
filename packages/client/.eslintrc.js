@@ -13,10 +13,6 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      parcel2: {
-        root: ['./src'],
-        projectRoot: 'src',
-      },
       node: {
         extensions: ['.js', '.ts'],
       },
