@@ -5,6 +5,7 @@ import { Key } from './engine/types';
 import socket from './network';
 import setupGame from './game/chatSetup';
 import { handleMessageData } from './network/dataHandler';
+import './style.css';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
