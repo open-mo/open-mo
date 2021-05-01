@@ -8,12 +8,11 @@ interface Dictionary<T> {
   [Key: string]: T;
 }
 
+type PacketValue = number | string | Dictionary<PacketValue>;
 interface Packet {
   pkt: number,
   data: Dictionary<PacketValue>
-};
-
-type PacketValue = number | string | Dictionary<PacketValue>;
+}
 
 export {
   UserWebSocket,
