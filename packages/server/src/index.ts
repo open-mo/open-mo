@@ -1,12 +1,11 @@
 import WebSocket from 'ws';
+import { UserWebSocket } from './types';
+import server from './server';
+import { handleMessageData } from './handlers';
 
-const PORT: number = 8080;
-const wss = new WebSocket.Server({ port: PORT });
-
-wss.on('connection', (ws: WebSocket) => {
+server.on('connection', (ws: UserWebSocket) => {
     ws.on('message', (message: string) => {
         console.log('msg received:', message);
+        handleMessageData(ws, message);
     });
-
-    ws.send('[server]: im aware of your connection :)');
 });
