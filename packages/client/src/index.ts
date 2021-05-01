@@ -2,6 +2,9 @@ import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
 import { Keyboard } from './engine/modules';
 import { Key } from './engine/types';
+import socket from './network';
+import setupGame from './game/chatSetup';
+import { handleMessageData } from './network/dataHandler';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
@@ -31,15 +34,15 @@ character.y = app.screen.height / 2;
 
 app.stage.addChild(character);
 
-const { SERVER_ADDRESS } = process.env;
-const ws = new WebSocket(`ws://${SERVER_ADDRESS}`);
+// game setup
+setupGame();
 
-ws.onopen = () => {
-  ws.send('[client]: hey server :)');
-};
+// socket.onopen = () => {
+//   console.log('connection opened :)');
+// };
 
-ws.onmessage = ({ data }) => {
-  console.log('received:', data);
+socket.onmessage = ({ data }) => {
+  handleMessageData(data);
 };
 
 // Listen for animate update

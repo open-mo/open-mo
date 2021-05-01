@@ -2,8 +2,24 @@
 <html>
   <head>
     <title>Pixi Client</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="canvas"></div>
+    <div>
+      <div id="canvas"></div>
+      <form id="chat-box" class="chat-box">
+        <textarea tabindex="-1" form="chat-box" class="chat-history" readonly></textarea>
+        <div style="display: flex;">
+          <input
+            type="text"
+            class="chat-input"
+            tabindex="1"
+            minlength="1"
+            maxlength="72"
+          />
+          <button type="submit">SEND</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

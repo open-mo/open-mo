@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+}
+
+#canvas {
+  width: 800px;
+  height: 600px;
+  border: 2px solid gray;
+  border-bottom: none;
+  outline: none;
+}
+
+.chat-box {
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid gray;
+  border-top: none;
+  outline: none;
+}
+
+.chat-history {
+  height: 100%;
+  background-color: yellow;
+  max-height: 128px;
+  min-height: 128px;
+  overflow-y: scroll;
+  resize: none;
+  outline:none;
+  border: none;
+}
+
+.chat-input {
+  border: none;
+  width: 100%;
+}
