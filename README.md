@@ -38,6 +38,13 @@
 - `yarn`
 - `yarn dev`
 
+## Possible errors 
+  ### [Failure loading WebGL context on Firefox](https://github.com/pixijs/pixi.js/issues/7070#issuecomment-760234482)
+  - Go to about:config and search for webgl.disabled, ensure that its value is false.
+  - Go to about:config and search for webgl.force-enabled, set it to true.
+  - Go to about:config and search for layers.acceleration.force-enabled, set it to true.
+  - Restart your firefox.
+
 ## Contributing
 This repository adheres to [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary), and also attempts to follow [The seven rules of a great Git commit message](https://chris.beams.io/posts/git-commit/#seven-rules).
 
