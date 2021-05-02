@@ -11,7 +11,6 @@ function addChatMessage(message: Packet) {
   const parsedMessage = `${sender}: ${chatMessage}\n`;
   const chatBox = document.getElementById('chat-box');
   const chatHistory = chatBox.getElementsByTagName('textarea').item(0);
-  chatHistory.scrollIntoView();
   chatHistory.value += parsedMessage;
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }
