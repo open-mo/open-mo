@@ -15,3 +15,8 @@ export interface Key {
   press: Noop;
   release: Noop;
 }
+
+export interface Position {
+  x: number;
+  y: number;
+}

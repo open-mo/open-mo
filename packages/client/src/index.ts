@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
-import { Keyboard } from './engine/modules';
+import { GameObject, Keyboard } from './engine/modules';
 import { Key } from './engine/types';
+import { Dictionary } from './types';
 import socket from './network';
 import setupGame from './game/chatSetup';
 import { handleMessageData } from './network/dataHandler';
@@ -22,18 +23,15 @@ const moveRight: Key = canvasKeyboard.addKey('d');
 
 document.getElementById('canvas')?.appendChild(app.view);
 
+const gameObjects: Dictionary<GameObject> = {};
 // create a new Sprite from an image path
-const character: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
-const SPEED: number = 2;
-
-// center the sprite's anchor point
-character.anchor.set(0.5);
+const sprite: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
+const character = new GameObject('1234', sprite, { x: app.screen.width / 2, y: app.screen.height / 2 });
 
 // move the sprite to the center of the screen
-character.x = app.screen.width / 2;
-character.y = app.screen.height / 2;
 
-app.stage.addChild(character);
+Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
+app.stage.addChild(sprite);
 
 // game setup
 setupGame();
@@ -47,20 +45,24 @@ socket.onmessage = ({ data }) => {
 };
 
 // Listen for animate update
-app.ticker.add((delta: number) => {
+app.ticker.add((_delta: number) => {
+  moveLeft.press = () => character.move({ x: -32, y: 0 });
+  moveUp.press = () => character.move({ x: 0, y: -32 });
+  moveRight.press = () => character.move({ x: 32, y: 0 });
+  moveDown.press = () => character.move({ x: 0, y: 32 });
   if (moveLeft.isDown) {
-    character.x -= SPEED * delta;
+    // character.position.x -= SPEED * delta;
   }
 
   if (moveUp.isDown) {
-    character.y -= SPEED * delta;
+    // character.position.y -= SPEED * delta;
   }
 
   if (moveRight.isDown) {
-    character.x += SPEED * delta;
+    // character.position.x += SPEED * delta;
   }
 
   if (moveDown.isDown) {
-    character.y += SPEED * delta;
+    // character.y += SPEED * delta;
   }
 });
