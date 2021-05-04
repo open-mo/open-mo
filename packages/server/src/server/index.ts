@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 import fs from 'fs';
 import https from 'https';
 import dotenv from 'dotenv';
+import gameLoop from './gameLoop';
 
 dotenv.config();
 
@@ -17,4 +18,4 @@ const wss = new WebSocket.Server({
 
 server.listen(PORT);
 
-export default wss;
+export { wss as server, gameLoop };

@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import { Packet } from 'types';
-import server from '../server';
+import { server } from '../server';
 
 function broadcast(message: Packet): void {
   server.clients.forEach((client) => {
