@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
 import { GameObject, Keyboard } from './engine/modules';
-import { Key } from './engine/types';
+import { Key, Position } from './engine/types';
 import socket from './network';
 import { toggleChat, chatSubmit } from './game/chatSetup';
 import { Dictionary } from './types';
@@ -44,7 +44,7 @@ let myCharacter: GameObject;
 interface User {
   id: string;
   nickname: string;
-  position: Dictionary<number>;
+  position: Position;
 }
 
 socket.on('users', (users) => {
@@ -74,8 +74,14 @@ socket.on('users', (users) => {
   });
 });
 
-socket.on('move player', ({ id, position }) => {
-  gameObjects[id].setPosition(position);
+socket.on('users snapshot', (users: Dictionary<User>) => {
+  Object.values(users).forEach((user: User) => {
+    const { id, position } = user;
+    if (!(id in gameObjects)) {
+      return;
+    }
+    gameObjects[id].setPosition(position);
+  });
 });
 
 // Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
