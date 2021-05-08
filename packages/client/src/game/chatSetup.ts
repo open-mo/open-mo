@@ -1,6 +1,4 @@
 import socket from '../network';
-import { Dictionary, PacketValue } from '../types';
-import { composeMessage } from '../network/dataHandler';
 
 function chatSetup() {
   const chatBox = document.getElementById('chat-box');
@@ -14,12 +12,7 @@ function chatSetup() {
         preventScroll: true,
       });
       chatHistory.scrollTop = chatHistory.scrollHeight;
-      const data: Dictionary<PacketValue> = {
-        sender: 'mock-person',
-        message,
-      };
-      const packet = composeMessage(0, data);
-      socket.send(packet);
+      socket.emit('chat message', `lucas: ${message}`);
     }
     e.preventDefault();
   });
