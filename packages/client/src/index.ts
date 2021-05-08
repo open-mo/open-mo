@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
 import { GameObject, Keyboard } from './engine/modules';
 import { Key } from './engine/types';
+import { toggleChat, chatSubmit } from './game/chatSetup';
 import { Dictionary } from './types';
 import setupGame from './game';
 import './style.css';
@@ -18,6 +19,19 @@ const moveUp: Key = canvasKeyboard.addKey('w');
 const moveLeft: Key = canvasKeyboard.addKey('a');
 const moveDown: Key = canvasKeyboard.addKey('s');
 const moveRight: Key = canvasKeyboard.addKey('d');
+const canvasEnter: Key = canvasKeyboard.addKey('Enter');
+const inputKeyboard = new Keyboard(document.querySelector('.chat-input'));
+const inputEnter: Key = inputKeyboard.addKey('Enter');
+
+canvasEnter.press = () => toggleChat(true);
+inputEnter.press = () => {
+  const chatInput = <HTMLInputElement>document.querySelector('.chat-input');
+  if (chatInput.value.length) {
+    chatSubmit();
+  } else {
+    toggleChat(false);
+  }
+};
 
 document.getElementById('canvas')?.appendChild(app.view);
 
