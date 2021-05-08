@@ -3,14 +3,14 @@ import {
   server,
   gameLoop,
 } from './server';
-import { User } from './server/classes';
+import { Character } from './server/classes';
 import { Dictionary, UserSocket } from './types';
 
-const users: Dictionary<User> = {};
+const users: Dictionary<Character> = {};
 
 function connectUser(socket: Socket) {
   // TODO: Create a separate class structure to handling explicitly with connected users.
-  users[socket.id] = new User((<UserSocket>socket).username, socket.id);
+  users[socket.id] = new Character((<UserSocket>socket).username, socket.id);
 }
 
 function broadcastServerSnapshot() {
@@ -33,6 +33,13 @@ server.use((socket, next) => {
 
 server.on('connection', (socket: Socket) => {
   connectUser(socket);
+  server.emit('users', users);
+
+  socket.on('move player', ({ id, position }) => {
+    users[id].position.x = position.x;
+    users[id].position.y = position.y;
+    server.emit('move player', { id, position: users[id].position });
+  });
 
   socket.on('chat message', (msg) => {
     server.emit('chat message', msg);
