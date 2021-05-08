@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
 import { GameObject, Keyboard } from './engine/modules';
+import { Character } from './engine/gameObjects.ts';
 import { Key, Position } from './engine/types';
 import socket from './network';
 import { toggleChat, chatSubmit } from './game/chatSetup';
@@ -38,7 +39,7 @@ document.getElementById('canvas')?.appendChild(app.view);
 
 const gameObjects: Dictionary<GameObject> = {};
 // create a new Sprite from an image path
-let myCharacter: GameObject;
+let myCharacter: Character;
 // app.stage.addChild(sprite);
 
 interface User {
@@ -49,25 +50,25 @@ interface User {
 
 socket.on('users', (users) => {
   Object.values(users).forEach((user: User) => {
-    const { id, position } = user;
+    const { id, position, nickname } = user;
     if (id in gameObjects) {
       return;
     }
     const sprite: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
     const mine = id === socket.id;
-    const character = new GameObject(
-      mine,
-      id,
+    const character = new Character(
       sprite,
       {
         x: position.x,
         y: position.y,
       },
+      nickname,
+      app.stage,
+      mine,
     );
 
     gameObjects[id] = character;
     if (mine) {
-      character.setSocket(socket);
       myCharacter = character;
     }
     app.stage.addChild(sprite);
