@@ -14,7 +14,7 @@ function connectUser(socket: Socket) {
 }
 
 function broadcastServerSnapshot() {
-  // console.log('update!');
+  server.emit('users snapshot', users);
 }
 
 server.use((socket, next) => {
@@ -38,7 +38,6 @@ server.on('connection', (socket: Socket) => {
   socket.on('move player', ({ id, position }) => {
     users[id].position.x = position.x;
     users[id].position.y = position.y;
-    server.emit('move player', { id, position: users[id].position });
   });
 
   socket.on('chat message', (msg) => {
