@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
 import { GameObject, Keyboard } from './engine/modules';
 import { Key } from './engine/types';
+import socket from './network';
 import { toggleChat, chatSubmit } from './game/chatSetup';
 import { Dictionary } from './types';
 import setupGame from './game';
@@ -37,19 +38,54 @@ document.getElementById('canvas')?.appendChild(app.view);
 
 const gameObjects: Dictionary<GameObject> = {};
 // create a new Sprite from an image path
-const sprite: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
-const character = new GameObject('1234', sprite, { x: app.screen.width / 2, y: app.screen.height / 2 });
+let myCharacter: GameObject;
+// app.stage.addChild(sprite);
 
-Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
-app.stage.addChild(sprite);
+interface User {
+  id: string;
+  nickname: string;
+  position: Dictionary<number>;
+}
 
+socket.on('users', (users) => {
+  Object.values(users).forEach((user: User) => {
+    const { id, position } = user;
+    if (id in gameObjects) {
+      return;
+    }
+    const sprite: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
+    const mine = id === socket.id;
+    const character = new GameObject(
+      mine,
+      id,
+      sprite,
+      {
+        x: position.x,
+        y: position.y,
+      },
+    );
+
+    gameObjects[id] = character;
+    if (mine) {
+      character.setSocket(socket);
+      myCharacter = character;
+    }
+    app.stage.addChild(sprite);
+  });
+});
+
+socket.on('move player', ({ id, position }) => {
+  gameObjects[id].setPosition(position);
+});
+
+// Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
 // game setup
 setupGame();
 
 // Listen for animate update
-app.ticker.add((_delta: number) => {
-  moveLeft.press = () => character.move({ x: -32, y: 0 });
-  moveUp.press = () => character.move({ x: 0, y: -32 });
-  moveRight.press = () => character.move({ x: 32, y: 0 });
-  moveDown.press = () => character.move({ x: 0, y: 32 });
+app.ticker.add(() => {
+  moveLeft.press = () => myCharacter.move({ x: -32, y: 0 });
+  moveUp.press = () => myCharacter.move({ x: 0, y: -32 });
+  moveRight.press = () => myCharacter.move({ x: 32, y: 0 });
+  moveDown.press = () => myCharacter.move({ x: 0, y: 32 });
 });
