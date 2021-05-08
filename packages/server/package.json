@@ -4,16 +4,14 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "tsc && ts-node-dev src/index.ts"
+    "dev": "tsc && ts-node-dev src/index.ts",
+    "lint": "yarn eslint src/**.ts"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
-    "uuid": "^8.3.2",
-    "ws": "^7.4.5"
+    "socket.io": "^4.0.2"
   },
   "devDependencies": {
-    "@types/uuid": "^8.3.0",
-    "@types/ws": "^7.4.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",

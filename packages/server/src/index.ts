@@ -1,47 +1,33 @@
-import { v4 as uuidv4 } from 'uuid';
+import { Socket } from 'socket.io';
 import {
   server,
   gameLoop,
 } from './server';
-import { UserWebSocket, Dictionary } from './types';
-import { handleMessageData } from './handlers';
+import { Dictionary } from './types';
 
-const users: Dictionary<UserWebSocket> = {};
-const usersToUpdate: Array<string> = [];
+const users: Dictionary<Socket> = {};
 
-function connectUser(ws: UserWebSocket) {
-  const user: UserWebSocket = ws;
-  const uuid = uuidv4();
-  user.id = uuid;
-  user.inputs = [];
-  users[uuid] = user;
+function connectUser(socket: Socket) {
+  // TODO: Create a separate class structure to handling explicitly with connected users.
+  users[socket.id] = socket;
 }
 
-function processUsersData() {
-  usersToUpdate.forEach((userID) => {
-    const ws = users[userID];
-    ws.inputs?.forEach((message) => {
-      handleMessageData(ws, message);
-      ws.inputs.shift();
-    });
-    usersToUpdate.shift();
-  });
+function broadcastServerSnapshot() {
+  // console.log('update!');
 }
 
-server.on('connection', (ws: UserWebSocket) => {
-  connectUser(ws);
+server.on('connection', (socket: Socket) => {
+  connectUser(socket);
 
-  ws.on('message', (message: string) => {
-    users[ws.id].inputs.push(message);
-    usersToUpdate.push(ws.id);
+  socket.on('chat message', (msg) => {
+    server.emit('chat message', msg);
   });
 
-  ws.on('close', () => {
-    delete users[ws.id];
+  socket.on('disconnect', () => {
+    delete users[socket.id];
   });
 });
 
-gameLoop((delta) => {
-  console.log('delta:', delta);
-  processUsersData();
+gameLoop(() => {
+  broadcastServerSnapshot();
 });

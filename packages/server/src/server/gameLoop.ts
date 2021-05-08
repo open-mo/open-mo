@@ -18,7 +18,7 @@ let previous = hrtimeMs();
  * the delta time value and the current tick (optional)
  * @param update - callback function to handle your game update
  */
-function gameLoop(update: (delta: number, tick?: number) => void): void {
+function gameLoop(update: (delta?: number, tick?: number) => void): void {
   setTimeout(gameLoop, TICK_LENGTH_MS, update);
   const now: number = hrtimeMs();
   const delta: number = (now - previous) / 100;
