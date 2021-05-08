@@ -23,6 +23,7 @@
   },
   "rules": {
     "no-shadow": "off",
+    "consistent-return": 0,
     "@typescript-eslint/no-shadow": ["error"],
     "import/extensions": [
       "error",
