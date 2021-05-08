@@ -1,4 +1,6 @@
-const { SERVER_ADDRESS } = process.env;
-const ws = new WebSocket(`wss://${SERVER_ADDRESS}`);
+import { io } from 'socket.io-client';
 
-export default ws;
+const { SERVER_ADDRESS } = process.env;
+const socket = io(`wss://${SERVER_ADDRESS}`);
+
+export default socket;

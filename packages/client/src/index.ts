@@ -3,9 +3,7 @@ import bonecoSprite from './examples/assets/buneco.png';
 import { GameObject, Keyboard } from './engine/modules';
 import { Key } from './engine/types';
 import { Dictionary } from './types';
-import socket from './network';
-import setupGame from './game/chatSetup';
-import { handleMessageData } from './network/dataHandler';
+import setupGame from './game';
 import './style.css';
 
 // The application will create a renderer using WebGL, if possible,
@@ -28,21 +26,11 @@ const gameObjects: Dictionary<GameObject> = {};
 const sprite: PIXI.Sprite = PIXI.Sprite.from(bonecoSprite);
 const character = new GameObject('1234', sprite, { x: app.screen.width / 2, y: app.screen.height / 2 });
 
-// move the sprite to the center of the screen
-
 Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
 app.stage.addChild(sprite);
 
 // game setup
 setupGame();
-
-// socket.onopen = () => {
-//   console.log('connection opened :)');
-// };
-
-socket.onmessage = ({ data }) => {
-  handleMessageData(data);
-};
 
 // Listen for animate update
 app.ticker.add((_delta: number) => {
@@ -50,19 +38,4 @@ app.ticker.add((_delta: number) => {
   moveUp.press = () => character.move({ x: 0, y: -32 });
   moveRight.press = () => character.move({ x: 32, y: 0 });
   moveDown.press = () => character.move({ x: 0, y: 32 });
-  if (moveLeft.isDown) {
-    // character.position.x -= SPEED * delta;
-  }
-
-  if (moveUp.isDown) {
-    // character.position.y -= SPEED * delta;
-  }
-
-  if (moveRight.isDown) {
-    // character.position.x += SPEED * delta;
-  }
-
-  if (moveDown.isDown) {
-    // character.y += SPEED * delta;
-  }
 });

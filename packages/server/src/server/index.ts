@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { Server } from 'socket.io';
 import fs from 'fs';
 import https from 'https';
 import dotenv from 'dotenv';
@@ -12,10 +12,13 @@ const server = https.createServer({
   key: fs.readFileSync('./fixtures/key.pem'),
 });
 
-const wss = new WebSocket.Server({
-  server,
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:9000', 'https://localhost:9000', 'https://mmo.lucascoelho.dev'],
+    methods: ['GET', 'POST'],
+  },
 });
 
 server.listen(PORT);
 
-export { wss as server, gameLoop };
+export { io as server, gameLoop };
