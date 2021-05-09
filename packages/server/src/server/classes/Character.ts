@@ -1,18 +1,24 @@
-import { Dictionary } from '../../types';
+import { Socket } from 'socket.io';
+import { Position } from '../../types';
 
 class Character {
   id: string;
 
   nickname = '';
 
-  position: Dictionary<number> = {
+  position: Position = {
     x: 0,
     y: 0,
+    timestamp: 0,
   }
 
-  constructor(nickname: string, id: string) {
-    this.nickname = nickname;
+  constructor(socket: Socket, id: string, nickname: string) {
     this.id = id;
+    this.nickname = nickname;
+  }
+
+  setPosition(position: Position): void {
+    this.position = position;
   }
 }
 

@@ -11,19 +11,18 @@ class Character extends GameObject {
 
   nickname: string;
 
-  stage: PIXI.Container;
+  unacknowledgedMessages: Array<Position> = [];
 
   constructor(
     sprite: PIXI.Sprite,
     initialPosition: Position = Vector.ZERO,
-    nickname: string,
     stage: PIXI.Container,
+    nickname: string,
     mine: boolean = false,
   ) {
-    super(socket.id, sprite, initialPosition);
+    super(socket.id, sprite, initialPosition, stage);
     this.mine = mine;
     this.id = socket.id;
-    this.stage = stage;
     this.nickname = nickname;
 
     /** FIXME: Remove magic numbers */
@@ -31,15 +30,18 @@ class Character extends GameObject {
     this.nameLabel.parent = this.sprite;
     this.nameLabel.position.y -= 16;
     this.nameLabel.anchor.set(0.5);
-    stage.addChild(this.nameLabel);
+    this.stage.addChild(this.nameLabel);
   }
 
   move(pos: Position) {
+    super.move(pos);
     if (this.mine) {
-      super.move(pos);
-      if (this.mine) {
-        socket.emit('move player', { id: this.id, position: this.position });
-      }
+      const movementData = {
+        ...this.position,
+        timestamp: new Date().getTime(),
+      };
+      this.unacknowledgedMessages.push(movementData);
+      socket.emit('move player', { position: { ...movementData }, id: this.id });
     }
     this.nameLabel.position = this.sprite.position;
     this.nameLabel.position.y -= 12;
@@ -49,6 +51,33 @@ class Character extends GameObject {
     super.setPosition(pos);
     this.nameLabel.position = this.sprite.position;
     this.nameLabel.position.y -= 12;
+  }
+
+  updatePosition(pos: Position): void {
+    if (!this.mine) return;
+    const hasUnacknowledges = Boolean(this.unacknowledgedMessages.length);
+    if (hasUnacknowledges) {
+      const firstUnacknowledge = this.unacknowledgedMessages[0];
+      const isDivergingPosition = firstUnacknowledge.x !== pos.x
+      || firstUnacknowledge.y !== pos.y;
+
+      const test = firstUnacknowledge.timestamp === pos.timestamp;
+
+      if (test && !isDivergingPosition) {
+        console.log('everything is fine :)');
+      }
+
+      if (firstUnacknowledge.timestamp === pos.timestamp && isDivergingPosition) {
+        this.setPosition(firstUnacknowledge);
+        console.log('reconciliated wrong position');
+      }
+      this.unacknowledgedMessages.shift();
+    }
+  }
+
+  destroy() {
+    super.destroy();
+    this.stage.removeChild(this.nameLabel);
   }
 }
 

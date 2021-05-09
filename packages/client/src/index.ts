@@ -38,10 +38,12 @@ inputEnter.press = () => {
 document.getElementById('canvas')?.appendChild(app.view);
 
 const gameObjects: Dictionary<GameObject> = {};
-// create a new Sprite from an image path
 let myCharacter: Character;
-// app.stage.addChild(sprite);
 
+function getGameObject(id: string): GameObject | null {
+  const gameObject = gameObjects[id] ?? null;
+  return gameObject;
+}
 interface User {
   id: string;
   nickname: string;
@@ -62,12 +64,13 @@ socket.on('users', (users) => {
         x: position.x,
         y: position.y,
       },
-      nickname,
       app.stage,
+      nickname,
       mine,
     );
 
     gameObjects[id] = character;
+    character.setParent(gameObjects);
     if (mine) {
       myCharacter = character;
     }
@@ -75,13 +78,22 @@ socket.on('users', (users) => {
   });
 });
 
+socket.on('remove player', (id: string) => {
+  const gameObject = getGameObject(id);
+  gameObject?.destroy();
+});
+
+socket.on('set local position', (nextPosition) => {
+  myCharacter.updatePosition(nextPosition);
+});
+
 socket.on('users snapshot', (users: Dictionary<User>) => {
   Object.values(users).forEach((user: User) => {
     const { id, position } = user;
-    if (!(id in gameObjects)) {
+    if (!(id in gameObjects) || id === myCharacter.id) {
       return;
     }
-    gameObjects[id].setPosition(position);
+    (<Character>gameObjects[id]).setPosition(position);
   });
 });
 
@@ -91,8 +103,10 @@ setupGame();
 
 // Listen for animate update
 app.ticker.add(() => {
-  moveLeft.press = () => myCharacter.move({ x: -32, y: 0 });
-  moveUp.press = () => myCharacter.move({ x: 0, y: -32 });
-  moveRight.press = () => myCharacter.move({ x: 32, y: 0 });
-  moveDown.press = () => myCharacter.move({ x: 0, y: 32 });
+  if (myCharacter) {
+    moveLeft.press = () => myCharacter.move({ x: -32, y: 0 });
+    moveUp.press = () => myCharacter.move({ x: 0, y: -32 });
+    moveRight.press = () => myCharacter.move({ x: 32, y: 0 });
+    moveDown.press = () => myCharacter.move({ x: 0, y: 32 });
+  }
 });
