@@ -13,7 +13,18 @@ const unacknowledgePositions: Dictionary<Array<Position>> = {};
 function connectUser(socket: Socket) {
   // TODO: Create a separate class structure to handling explicitly with connected users
   // and contains this Character.
-  worldSnapshot.addUser(socket.id, new Character(socket, socket.id, (<UserSocket>socket).username));
+  const initialPosition: Position = {
+    x: 6,
+    y: 6,
+  };
+  worldSnapshot.addUser(
+    socket.id,
+    new Character(
+      socket.id,
+      (<UserSocket>socket).username,
+      initialPosition,
+    ),
+  );
 }
 
 function broadcastServerSnapshot() {

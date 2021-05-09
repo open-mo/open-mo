@@ -28,6 +28,7 @@ class Character extends GameObject {
     /** FIXME: Remove magic numbers */
     this.nameLabel = new PIXI.Text(this.nickname, { fontSize: 10, fill: 0x000000, align: 'center' });
     this.nameLabel.parent = this.sprite;
+    this.nameLabel.position = this.sprite.position;
     this.nameLabel.position.y -= 16;
     this.nameLabel.anchor.set(0.5);
     this.stage.addChild(this.nameLabel);
