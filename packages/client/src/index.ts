@@ -38,9 +38,7 @@ inputEnter.press = () => {
 document.getElementById('canvas')?.appendChild(app.view);
 
 const gameObjects: Dictionary<GameObject> = {};
-// create a new Sprite from an image path
 let myCharacter: Character;
-// app.stage.addChild(sprite);
 
 interface User {
   id: string;
@@ -75,13 +73,17 @@ socket.on('users', (users) => {
   });
 });
 
+socket.on('set local position', (nextPosition) => {
+  myCharacter.updatePosition(nextPosition);
+});
+
 socket.on('users snapshot', (users: Dictionary<User>) => {
   Object.values(users).forEach((user: User) => {
     const { id, position } = user;
-    if (!(id in gameObjects)) {
+    if (!(id in gameObjects) || id === myCharacter.id) {
       return;
     }
-    gameObjects[id].setPosition(position);
+    (<Character>gameObjects[id]).setPosition(position);
   });
 });
 

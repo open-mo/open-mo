@@ -4,6 +4,12 @@ interface Dictionary<T> {
   [Key: string]: T;
 }
 
+interface Position {
+  x: number;
+  y: number;
+  timestamp?: number;
+}
+
 interface UserSocket extends Socket {
   username: string;
 }
@@ -11,4 +17,5 @@ interface UserSocket extends Socket {
 export {
   Dictionary,
   UserSocket,
+  Position,
 };

@@ -13,6 +13,8 @@ class Character extends GameObject {
 
   stage: PIXI.Container;
 
+  unacknowledgedMessages: Array<Position> = [];
+
   constructor(
     sprite: PIXI.Sprite,
     initialPosition: Position = Vector.ZERO,
@@ -35,11 +37,14 @@ class Character extends GameObject {
   }
 
   move(pos: Position) {
+    super.move(pos);
     if (this.mine) {
-      super.move(pos);
-      if (this.mine) {
-        socket.emit('move player', { id: this.id, position: this.position });
-      }
+      const movementData = {
+        ...this.position,
+        timestamp: new Date().getTime(),
+      };
+      this.unacknowledgedMessages.push(movementData);
+      socket.emit('move player', { position: { ...movementData }, id: this.id });
     }
     this.nameLabel.position = this.sprite.position;
     this.nameLabel.position.y -= 12;
@@ -49,6 +54,22 @@ class Character extends GameObject {
     super.setPosition(pos);
     this.nameLabel.position = this.sprite.position;
     this.nameLabel.position.y -= 12;
+  }
+
+  updatePosition(pos: Position): void {
+    if (!this.mine) return;
+    const hasUnacknowledges = Boolean(this.unacknowledgedMessages.length);
+    if (hasUnacknowledges) {
+      const firstUnacknowledge = this.unacknowledgedMessages[0];
+      const isDivergingPosition = firstUnacknowledge.x !== pos.x
+      || firstUnacknowledge.y !== pos.y;
+
+      if (firstUnacknowledge.timestamp === pos.timestamp && isDivergingPosition) {
+        this.setPosition(firstUnacknowledge);
+        console.log('reconciliated wrong position');
+      }
+      this.unacknowledgedMessages.shift();
+    }
   }
 }
 

@@ -19,4 +19,6 @@ export interface Key {
 export interface Position {
   x: number;
   y: number;
+  /** Last received timestamp */
+  timestamp?: number;
 }
