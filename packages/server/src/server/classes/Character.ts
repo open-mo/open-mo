@@ -1,4 +1,3 @@
-import { Socket } from 'socket.io';
 import { Position } from '../../types';
 
 class Character {
@@ -9,12 +8,15 @@ class Character {
   position: Position = {
     x: 0,
     y: 0,
-    timestamp: 0,
   }
 
-  constructor(socket: Socket, id: string, nickname: string) {
+  constructor(id: string, nickname: string, initialPosition?: Position) {
     this.id = id;
     this.nickname = nickname;
+
+    if (initialPosition) {
+      this.position = initialPosition;
+    }
   }
 
   setPosition(position: Position): void {

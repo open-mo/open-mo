@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Vector } from './constants';
+import { Vector, TILE_SIZE } from './constants';
 import { Position } from '../types';
 import { Dictionary } from '../../types';
 
@@ -22,7 +22,10 @@ class GameObject {
   ) {
     this.id = id;
     this.sprite = sprite;
-    this.position = initialPosition;
+    this.position = {
+      x: initialPosition.x * TILE_SIZE,
+      y: initialPosition.y * TILE_SIZE,
+    };
     this.stage = stage;
     this.sprite.x = this.position.x;
     this.sprite.y = this.position.y;
@@ -30,15 +33,15 @@ class GameObject {
   }
 
   move(pos: Position) {
-    this.position.x += pos.x;
-    this.position.y += pos.y;
+    this.position.x += pos.x * TILE_SIZE;
+    this.position.y += pos.y * TILE_SIZE;
     this.sprite.x = this.position.x;
     this.sprite.y = this.position.y;
   }
 
   setPosition(pos: Position) {
-    this.position.x = pos.x;
-    this.position.y = pos.y;
+    this.position.x = pos.x * TILE_SIZE;
+    this.position.y = pos.y * TILE_SIZE;
     this.sprite.x = this.position.x;
     this.sprite.y = this.position.y;
   }

@@ -111,9 +111,9 @@ setupGame();
 // Listen for animate update
 app.ticker.add(() => {
   if (myCharacter) {
-    moveLeft.press = () => myCharacter.move({ x: -32, y: 0 });
-    moveUp.press = () => myCharacter.move({ x: 0, y: -32 });
-    moveRight.press = () => myCharacter.move({ x: 32, y: 0 });
-    moveDown.press = () => myCharacter.move({ x: 0, y: 32 });
+    moveLeft.press = () => myCharacter.move({ x: -1, y: 0 });
+    moveUp.press = () => myCharacter.move({ x: 0, y: -1 });
+    moveRight.press = () => myCharacter.move({ x: 1, y: 0 });
+    moveDown.press = () => myCharacter.move({ x: 0, y: 1 });
   }
 });

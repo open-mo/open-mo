@@ -28,4 +28,6 @@ const Vector: Dictionary<Position> = {
   },
 };
 
-export { Vector };
+const TILE_SIZE: number = 32;
+
+export { Vector, TILE_SIZE };
