@@ -3,16 +3,17 @@ import {
   server,
   gameLoop,
 } from './server';
-import { Character } from './server/classes';
+import { Character, WorldSnapshot } from './server/classes';
 import { Dictionary, UserSocket, Position } from './types';
 
-const users: Dictionary<Character> = {};
+const worldSnapshot: WorldSnapshot = new WorldSnapshot();
+
 const unacknowledgePositions: Dictionary<Array<Position>> = {};
 
 function connectUser(socket: Socket) {
   // TODO: Create a separate class structure to handling explicitly with connected users
   // and contains this Character.
-  users[socket.id] = new Character(socket, socket.id, (<UserSocket>socket).username);
+  worldSnapshot.addUser(socket.id, new Character(socket, socket.id, (<UserSocket>socket).username));
 }
 
 function broadcastServerSnapshot() {
@@ -25,7 +26,7 @@ function broadcastServerSnapshot() {
        * this local player position to itself
        */
       if (nextPosition) {
-        users[userID].position = nextPosition;
+        worldSnapshot.setUserPosition(userID, nextPosition);
         server.to(userID).emit('set local position', nextPosition);
       }
     }
@@ -35,7 +36,7 @@ function broadcastServerSnapshot() {
    * After acknowledgements, we broadcast to everyone the new
    * world snapshot.
    */
-  server.emit('users snapshot', users);
+  worldSnapshot.sendSnapshot();
 }
 
 server.use((socket, next) => {
@@ -54,7 +55,7 @@ server.use((socket, next) => {
 
 server.on('connection', (socket: Socket) => {
   connectUser(socket);
-  server.emit('users', users);
+  server.emit('users', worldSnapshot.users);
 
   socket.on('move player', ({ id, position }) => {
     // users[id].position.x = position.x;
@@ -73,7 +74,7 @@ server.on('connection', (socket: Socket) => {
   });
 
   socket.on('disconnect', () => {
-    delete users[socket.id];
+    worldSnapshot.removeUser(socket.id);
     delete unacknowledgePositions[socket.id];
   });
 });

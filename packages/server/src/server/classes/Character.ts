@@ -16,6 +16,10 @@ class Character {
     this.id = id;
     this.nickname = nickname;
   }
+
+  setPosition(position: Position): void {
+    this.position = position;
+  }
 }
 
 export default Character;

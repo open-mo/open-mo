@@ -11,21 +11,18 @@ class Character extends GameObject {
 
   nickname: string;
 
-  stage: PIXI.Container;
-
   unacknowledgedMessages: Array<Position> = [];
 
   constructor(
     sprite: PIXI.Sprite,
     initialPosition: Position = Vector.ZERO,
-    nickname: string,
     stage: PIXI.Container,
+    nickname: string,
     mine: boolean = false,
   ) {
-    super(socket.id, sprite, initialPosition);
+    super(socket.id, sprite, initialPosition, stage);
     this.mine = mine;
     this.id = socket.id;
-    this.stage = stage;
     this.nickname = nickname;
 
     /** FIXME: Remove magic numbers */
@@ -33,7 +30,7 @@ class Character extends GameObject {
     this.nameLabel.parent = this.sprite;
     this.nameLabel.position.y -= 16;
     this.nameLabel.anchor.set(0.5);
-    stage.addChild(this.nameLabel);
+    this.stage.addChild(this.nameLabel);
   }
 
   move(pos: Position) {
@@ -64,12 +61,23 @@ class Character extends GameObject {
       const isDivergingPosition = firstUnacknowledge.x !== pos.x
       || firstUnacknowledge.y !== pos.y;
 
+      const test = firstUnacknowledge.timestamp === pos.timestamp;
+
+      if (test && !isDivergingPosition) {
+        console.log('everything is fine :)');
+      }
+
       if (firstUnacknowledge.timestamp === pos.timestamp && isDivergingPosition) {
         this.setPosition(firstUnacknowledge);
         console.log('reconciliated wrong position');
       }
       this.unacknowledgedMessages.shift();
     }
+  }
+
+  destroy() {
+    super.destroy();
+    this.stage.removeChild(this.nameLabel);
   }
 }
 
