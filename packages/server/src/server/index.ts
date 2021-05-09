@@ -14,7 +14,11 @@ const server = https.createServer({
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:9000', 'https://localhost:9000', 'https://mmo.lucascoelho.dev'],
+    /**
+     * Localhost for local development;
+     * lat two for itch.io
+     */
+    origin: ['http://localhost:9000', 'https://localhost:9000', 'https://v6p9d9t4.ssl.hwcdn.net', 'http://v6p9d9t4.ssl.hwcdn.net'],
     methods: ['GET', 'POST'],
   },
 });
