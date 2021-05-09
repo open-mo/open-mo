@@ -72,6 +72,13 @@ socket.on('users', (users) => {
     gameObjects[id] = character;
     character.setParent(gameObjects);
     if (mine) {
+      /**
+       * Prevent local character from being "duplicated"
+       * after reconnection.
+       * */
+      if (myCharacter) {
+        myCharacter.destroy();
+      }
       myCharacter = character;
     }
     app.stage.addChild(sprite);
