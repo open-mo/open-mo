@@ -22,28 +22,25 @@ class GameObject {
   ) {
     this.id = id;
     this.sprite = sprite;
-    this.position = {
-      x: initialPosition.x * TILE_SIZE,
-      y: initialPosition.y * TILE_SIZE,
-    };
+    this.position = initialPosition;
     this.stage = stage;
-    this.sprite.x = this.position.x;
-    this.sprite.y = this.position.y;
+    this.sprite.x = this.position.x * TILE_SIZE;
+    this.sprite.y = this.position.y * TILE_SIZE;
     this.sprite.anchor.set(0.5);
   }
 
   move(pos: Position) {
-    this.position.x += pos.x * TILE_SIZE;
-    this.position.y += pos.y * TILE_SIZE;
-    this.sprite.x = this.position.x;
-    this.sprite.y = this.position.y;
+    this.position.x += pos.x;
+    this.position.y += pos.y;
+    this.sprite.x = this.position.x * TILE_SIZE;
+    this.sprite.y = this.position.y * TILE_SIZE;
   }
 
   setPosition(pos: Position) {
-    this.position.x = pos.x * TILE_SIZE;
-    this.position.y = pos.y * TILE_SIZE;
-    this.sprite.x = this.position.x;
-    this.sprite.y = this.position.y;
+    this.position.x = pos.x;
+    this.position.y = pos.y;
+    this.sprite.x = this.position.x * TILE_SIZE;
+    this.sprite.y = this.position.y * TILE_SIZE;
   }
 
   setParent(parent: Dictionary<GameObject>) {
@@ -51,7 +48,6 @@ class GameObject {
   }
 
   destroy() {
-    console.log('removed');
     this.stage.removeChild(this.sprite);
     delete this.parent[this.id];
   }

@@ -4,6 +4,9 @@ import { Position } from '../types';
 import { Vector } from '../modules/constants';
 import socket from '../../network';
 
+function lerp(v0: number, v1: number, t: number): number {
+  return (1 - t) * v0 + t * v1;
+}
 class Character extends GameObject {
   mine: boolean;
 
@@ -61,13 +64,6 @@ class Character extends GameObject {
       const firstUnacknowledge = this.unacknowledgedMessages[0];
       const isDivergingPosition = firstUnacknowledge.x !== pos.x
       || firstUnacknowledge.y !== pos.y;
-
-      const test = firstUnacknowledge.timestamp === pos.timestamp;
-
-      if (test && !isDivergingPosition) {
-        console.log('everything is fine :)');
-      }
-
       if (firstUnacknowledge.timestamp === pos.timestamp && isDivergingPosition) {
         this.setPosition(firstUnacknowledge);
         console.log('reconciliated wrong position');
