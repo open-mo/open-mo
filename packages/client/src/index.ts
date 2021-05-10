@@ -9,10 +9,12 @@ import { Dictionary } from './types';
 import setupGame from './game';
 import './style.css';
 
-// The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
-// and the root stage PIXI.Container
-const app: PIXI.Application = new PIXI.Application({ backgroundColor: 0x1099bb });
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+PIXI.settings.ROUND_PIXELS = false;
+
+const app: PIXI.Application = new PIXI.Application({
+  backgroundColor: 0x1099bb,
+});
 app.view.setAttribute('tabindex', '0');
 app.view.focus();
 
@@ -77,6 +79,7 @@ socket.on('users', (users) => {
        * after reconnection.
        * */
       if (myCharacter) {
+        console.log('destroyed');
         myCharacter.destroy();
       }
       myCharacter = character;
@@ -104,6 +107,7 @@ socket.on('users snapshot', (users: Dictionary<User>) => {
   });
 });
 
+// app.stage.scale.set(2);
 // Object.values(gameObjects).forEach((object) => app.stage.addChild(object.sprite));
 // game setup
 setupGame();
