@@ -12,6 +12,7 @@
     "socket.io": "^4.0.2"
   },
   "devDependencies": {
+    "@types/socket.io": "^2.1.13",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",

@@ -38,7 +38,7 @@ function broadcastServerSnapshot() {
        */
       if (nextPosition) {
         worldSnapshot.setUserPosition(userID, nextPosition);
-        server.to(userID).emit('set local position', nextPosition);
+        server.sendTo(userID, 'set local position', nextPosition);
       }
     }
   });
@@ -49,20 +49,6 @@ function broadcastServerSnapshot() {
    */
   worldSnapshot.sendSnapshot();
 }
-
-server.use((socket, next) => {
-  const { nickname } = socket.handshake.auth;
-  if (!nickname) {
-    return next(new Error('invalid nickname!'));
-  }
-  /**
-     * We have to ignore this so we can implement this middlware as suggested in socket.io
-     * documentation
-     */
-  // eslint-disable-next-line no-param-reassign
-  (<UserSocket>socket).username = nickname;
-  next();
-});
 
 server.on('connection', (socket: Socket) => {
   connectUser(socket);
