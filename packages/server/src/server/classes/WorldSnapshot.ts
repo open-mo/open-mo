@@ -25,8 +25,7 @@ class WorldSnapshot {
       const minutes = date.getMinutes();
       const seconds = date.getSeconds();
       console.log(`${hours}:${minutes}:${seconds}:`, 'has user changes to send');
-      // const serializedUsers = Object.keys;
-      // server.emit('users snapshot', serializedUsers);
+      server.emit('users snapshot', this.users);
       this.hasUserChanges = false;
     }
   }
