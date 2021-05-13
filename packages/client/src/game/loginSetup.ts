@@ -14,7 +14,7 @@ function handleLogin(event: Event) {
     gameContainer.style.display = 'block';
     canvas.focus();
 
-    socket.auth = { nickname };
+    socket.setAuth({ nickname });
     socket.connect();
     user.setNickname(nickname);
     user.setID(socket.id);

@@ -4,9 +4,6 @@ import { Position } from '../types';
 import { Vector } from '../modules/constants';
 import socket from '../../network';
 
-function lerp(v0: number, v1: number, t: number): number {
-  return (1 - t) * v0 + t * v1;
-}
 class Character extends GameObject {
   mine: boolean;
 
@@ -27,6 +24,7 @@ class Character extends GameObject {
     this.mine = mine;
     this.id = socket.id;
     this.nickname = nickname;
+    console.log(this.id);
 
     /** FIXME: Remove magic numbers */
     this.nameLabel = new PIXI.Text(this.nickname, { fontSize: 10, fill: 0x000000, align: 'center' });

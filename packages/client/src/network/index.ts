@@ -1,8 +1,7 @@
-import { io } from 'socket.io-client';
+import { Socket } from './classes';
 
 const { SERVER_ADDRESS } = process.env;
-const socket = io(`wss://${SERVER_ADDRESS}`, {
-  autoConnect: false,
-});
+const URL = `wss://${SERVER_ADDRESS}`;
+const socket = new Socket(URL);
 
 export default socket;
