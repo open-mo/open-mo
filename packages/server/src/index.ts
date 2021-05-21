@@ -55,9 +55,6 @@ server.on('connection', (socket: Socket) => {
   server.emit('users', worldSnapshot.users);
 
   socket.on('move player', ({ id, position }) => {
-    // users[id].position.x = position.x;
-    // users[id].position.y = position.y;
-    // users[id].position.timestamp = position.timestamp;
     if (id in unacknowledgePositions && unacknowledgePositions[id].length > 30) {
       unacknowledgePositions[id].shift();
     } else if (!(id in unacknowledgePositions)) {
