@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import bonecoSprite from './examples/assets/buneco.png';
-import { GameObject, Keyboard } from './engine/modules';
+import {
+  GameObject, Keyboard,
+} from './engine/modules';
 import { Character } from './engine/gameObjects.ts';
 import { Key, Position } from './engine/types';
 import socket from './network';
@@ -66,7 +68,7 @@ socket.on('users', (users) => {
         x: position.x,
         y: position.y,
       },
-      app.stage,
+      app,
       nickname,
       mine,
     );
@@ -115,9 +117,29 @@ setupGame();
 // Listen for animate update
 app.ticker.add(() => {
   if (myCharacter) {
-    moveLeft.press = () => myCharacter.move({ x: -1, y: 0 });
-    moveUp.press = () => myCharacter.move({ x: 0, y: -1 });
-    moveRight.press = () => myCharacter.move({ x: 1, y: 0 });
-    moveDown.press = () => myCharacter.move({ x: 0, y: 1 });
+    // console.log(perc);
+    if (moveLeft.isDown) {
+      myCharacter.move({ x: -1, y: 0 });
+    }
+    if (moveRight.isDown) {
+      myCharacter.move({ x: 1, y: 0 });
+    }
+    if (moveDown.isDown) {
+      myCharacter.move({ x: 0, y: 1 });
+    }
+    if (moveUp.isDown) {
+      myCharacter.move({ x: 0, y: -1 });
+    }
+    // moveLeft.press = () => myCharacter.move({ x: -1, y: 0 });
+    // moveUp.press = () => myCharacter.move({ x: 0, y: -1 });
+    // moveRight.press = () => myCharacter.move({ x: 1, y: 0 });
+    // moveDown.press = () => myCharacter.move({ x: 0, y: 1 });
+    // myCharacter.setPosition({ x: lerp(3, 5, perc), y: 4 });
   }
 });
+
+//
+/**
+ * Desired API
+ * Tween.linear(x, y, tempo, (value) => cb fn)
+ */
