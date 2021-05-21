@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     'no-shadow': 'off',
     'no-unused-vars': 'off',
+    'no-param-reassign': ['error', { props: false }],
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/no-unused-vars': ['error'],
     'import/extensions': [
